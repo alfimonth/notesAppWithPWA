@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+
+		<!-- Add meta viewport here -->
+
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<meta name="application-name" content="Notes App" />
+		<meta name="author" content="YOUR NAME" />
+		<meta name="description" content="Notes App is a simple note taking app. It allows you to take notes and store them in your browser. It is a PWA and works offline." />
+    <link rel="manifest" href="app.webmanifest">
+
+		<title>Notes App</title>
+
+		<!-- Favicon -->
+		<link rel="icon" href="favicon.ico" />
+	</head>
+	<body>
+		<!-- <nav id="navListContainer"></nav> -->
+		<nav class="navbar navbar-expand-md">
+			<div class="container">
+				<span class="navbar-brand">Notes App</span>
+
+				<button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<!-- Navlist -->
+				<div id="navListContainer" class="collapse navbar-collapse justify-content-end align-items-center"></div>
+				<!-- Drawer -->
+				<div id="offcanvasNavbar" class="d-block d-md-none offcanvas offcanvas-start" data-bs-scroll="true" aria-labelledby="offcanvasNavbar" tabindex="-1">
+					<div class="offcanvas-header">
+						<span class="offcanvas-title navbar-brand" id="offcanvasNavbar">Notes App</span>
+						<button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+					</div>
+					<div class="offcanvas-body">
+						<div id="navListOffcanvas"></div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<main>
+			<div id="mainContent" class="container py-5"></div>
+		</main>
+
+		<footer>
+			<div class="main-footer">
+				<div class="container px-3 py-4">
+					<p class="mb-0 text-center">&copy; 2023 | IDCamp X KADIN by Dicoding Indonesia</p>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>
+
