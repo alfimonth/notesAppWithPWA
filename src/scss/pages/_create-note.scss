@@ -1,0 +1,52 @@
+#cameraContainer {
+	height: 80vh;
+
+	position: relative;
+
+	#videoCamera {
+		object-fit: cover;
+		border-radius: 8px;
+	}
+
+	#cameraTools {
+		display: block;
+		margin-inline: auto;
+		padding: 16px 24px;
+		background-color: #00000055;
+		border-radius: 16px;
+
+		position: absolute;
+		inset-inline-start: 50%;
+		inset-block-end: 16px;
+
+		transform: translateX(-50%);
+
+		font-size: 1rem;
+	}
+}
+
+#outputCameraContainer {
+	margin-block-start: 64px;
+	position: relative;
+
+	#photoOutput {
+		object-fit: cover;
+		border-radius: 8px;
+	}
+
+	#outputTools {
+		display: block;
+		margin-inline: auto;
+		padding: 16px 24px;
+		background-color: #00000055;
+		border-radius: 16px;
+
+		position: absolute;
+		inset-inline-start: 50%;
+		inset-block-end: 16px;
+
+		transform: translateX(-50%);
+
+		font-size: 1rem;
+	}
+}
