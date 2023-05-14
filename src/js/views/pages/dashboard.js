@@ -1,6 +1,12 @@
+import BookmarkNotesIdb from '../../data/bookmark-notes-idb';
 import AuthApi from '../../networks/auth-api';
 import NotesApi from '../../networks/notes-api';
-import { createNoteListEmptyTemplate, noteItemTemplate } from '../templates/template-creator';
+import {
+  createBookmarkButtonTemplate,
+  createNoteListEmptyTemplate,
+  createRemoveBookmarkButtonTemplate,
+  noteItemTemplate
+} from '../templates/template-creator';
 
 const Dashboard = {
   async render() {
@@ -20,6 +26,9 @@ const Dashboard = {
   },
 
   async _initialData() {
+    // Get all bookmarked notes data from indexedDB
+    const allBookmarkedNotes = await BookmarkNotesIdb.getAllBookmarkedNotes();
+
     // Get all notes data from API
     const notes = await NotesApi.getAll();
     const user = await AuthApi.getUserInfo();
@@ -32,10 +41,10 @@ const Dashboard = {
       return this._populateNotesListEmpty(notesListEl);
     }
 
-    this._populateNotesList(notesListEl, notes, user.data.name);
+    this._populateNotesList(notesListEl, notes, user.data.name, allBookmarkedNotes);
   },
 
-  _populateNotesList(containerEl, notes, user) {
+  _populateNotesList(containerEl, notes, user, allBookmarkedNotes) {
     containerEl.innerHTML = '';
 
     const notesdata = notes.data
@@ -43,9 +52,20 @@ const Dashboard = {
 
     // Populate notes list with note item template
     notesdata.forEach((note) => {
+      // Check if note is bookmarked
+      const isBookmarked = allBookmarkedNotes.find(
+        (bookmarkedNote) => bookmarkedNote.id === note.id,
+      );
+
+      const bookmarkButton = isBookmarked
+        ? createRemoveBookmarkButtonTemplate(note.id)
+        : createBookmarkButtonTemplate(note.id);
+
+
+
       containerEl.innerHTML += `
         <div class="col-12">
-          ${noteItemTemplate(note, user)}
+          ${noteItemTemplate(note, user, bookmarkButton)}
         </div>
       `;
     });
@@ -65,6 +85,39 @@ const Dashboard = {
         }
       });
     });
+    // Add event listener to delete button for each note item
+    containerEl.querySelectorAll(`#bookmarkButton`).forEach((el) => {
+      el.addEventListener('click', async (event) => {
+        const noteId = event.target.dataset.id;
+
+        try {
+          const note = await NotesApi.getById(noteId);
+          await BookmarkNotesIdb.putBookmark(note.data);
+
+          this._initialData();
+        } catch (error) {
+          console.error('Something wrong when bookmarking a note');
+          console.error(error);
+        }
+      });
+    });
+
+    // Add event listener to delete button for each note item
+    containerEl.querySelectorAll(`#removeBookmarkButton`).forEach((el) => {
+      el.addEventListener('click', async (event) => {
+        const noteId = event.target.dataset.id;
+
+        try {
+          await BookmarkNotesIdb.deleteBookmark(noteId);
+
+          this._initialData();
+        } catch (error) {
+          console.error('Something wrong when deleting bookmark note from IndexedDB');
+          console.error(error);
+        }
+      });
+    });
+
   },
 
   _populateNotesListEmpty(containerEl) {
