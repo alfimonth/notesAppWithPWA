@@ -45,23 +45,31 @@ const authenticatedNavListTemplate = (userInfo) => `
   </ul>
 `;
 
-const noteItemTemplate = (note) => `
-  <div class="card h-100">
-    <div class="card-body">
-      <h5 class="card-title">${note.title}</h5>
-      <span class="text-muted">${note.owner}</span> | 
-      <span class="text-muted">${convertToFormattedDate(note.createdAt)}</span>
-      <p class="card-text">${note.body}</p>
-      <div class="mt-3 d-flex gap-2 justify-content-end align-items-end">
-        <button 
-          id="deleteNoteButton" 
-          data-id="${note.id}" 
-          class="btn btn-danger"
-        >Hapus</button>
-      </div>
+const noteItemTemplate = (note, userInfo) => {
+
+  let result = `
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">${note.title}</h5>
+        <span class="text-muted">${note.owner}</span> | 
+        <span class="text-muted">${convertToFormattedDate(note.createdAt)}</span>
+        <p class="card-text">${note.body}</p>`
+
+  if (note.owner === userInfo) {
+    result +=
+      `<div class="mt-3 d-flex gap-2 justify-content-end align-items-end">
+          <button 
+            id="deleteNoteButton" 
+            data-id="${note.id}" 
+            class="btn btn-danger"
+          >Hapus</button>
+        </div>`
+  };
+  result += `</div>
     </div>
-  </div>
-`;
+  `
+  return result;
+};
 
 const createNoteListEmptyTemplate = () => {
   return `

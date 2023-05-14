@@ -1,3 +1,4 @@
+import AuthApi from '../../networks/auth-api';
 import NotesApi from '../../networks/notes-api';
 import { createNoteListEmptyTemplate, noteItemTemplate } from '../templates/template-creator';
 
@@ -21,6 +22,7 @@ const Dashboard = {
   async _initialData() {
     // Get all notes data from API
     const notes = await NotesApi.getAll();
+    const user = await AuthApi.getUserInfo();
 
     // Get notesList element
     const notesListEl = document.getElementById('notesList');
@@ -30,17 +32,20 @@ const Dashboard = {
       return this._populateNotesListEmpty(notesListEl);
     }
 
-    this._populateNotesList(notesListEl, notes);
+    this._populateNotesList(notesListEl, notes, user.data.name);
   },
 
-  _populateNotesList(containerEl, notes) {
+  _populateNotesList(containerEl, notes, user) {
     containerEl.innerHTML = '';
 
+    const notesdata = notes.data
+    notesdata.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
     // Populate notes list with note item template
-    notes.data.forEach((note) => {
+    notesdata.forEach((note) => {
       containerEl.innerHTML += `
         <div class="col-12">
-          ${noteItemTemplate(note)}
+          ${noteItemTemplate(note, user)}
         </div>
       `;
     });
