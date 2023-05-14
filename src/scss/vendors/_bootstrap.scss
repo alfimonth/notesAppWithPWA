@@ -54,3 +54,24 @@
 //
 // Tambahkan custom code disini
 //
+@include media-breakpoint-down(md) { 
+    .nav{
+        flex-direction: column;
+    }
+
+    .offcanvas-body{
+        overflow-y: visible;
+    }
+
+    .nav-item{
+        order:2;
+    }
+
+    #userLoggedMenu{
+        order: 1;
+    }
+
+    .dropdown-menu{
+        right: unset !important;
+    }
+}
